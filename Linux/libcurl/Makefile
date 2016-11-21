@@ -1,5 +1,5 @@
 LDFLAGS := -lcurl
 include ../Makefile
 
-run: 
-	./$(APP) www.baidu.com baidu.html
+run: $(APP)
+	./$(APP) http://www.baidu.com baidu.html
