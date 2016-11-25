@@ -1,0 +1,12 @@
+#!/usr/bin/expect -f  
+ set ip [lindex $argv 0 ]
+ set password slamware123
+ set user root
+
+ set timeout 10
+ spawn ssh $user@$ip
+ expect {
+ 	"*yes/no"    { send "yes\r"; exp_continue}
+ 	"*password:" { send "$password\r" }
+ }  
+ interact
