@@ -20,7 +20,7 @@ int main( )
         /* exec the target */
         execvpe("wc", args1, NULL); /* no return if success */
         printf("pid %d: I am back, something is wrong!\n", getpid());
-    }   
+    }
 
     /* process A continues */
     close(pipefds[0]); /* close the read end */
@@ -34,7 +34,7 @@ int main( )
         /* exec the target */
         execvpe("ls", args2, NULL); /* no return if success */
         printf("pid %d: I am back, something is wrong!\n", getpid( ));
-    }   
+    }
     /* process A continues */
     close(pipefds[1]); /* close the write end */
     wait4(child_B, NULL, 0, NULL); /* wait for process B to finish */
