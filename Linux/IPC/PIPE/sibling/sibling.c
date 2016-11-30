@@ -1,4 +1,5 @@
 //ls -l | wc
+// int dup2(int oldfd, int newfd); oldfd is copied to newfd
 #include <stdio.h>
 int main( )
 {
@@ -10,27 +11,28 @@ int main( )
     pipe(pipefds); /* create a pipe */
     if (!(child_B = fork( ))) /* fork process B */
     {   
-        /**** Process B ****/
+        /**** Child Process B ****/
         close(pipefds[1]); /* close the write end */
         /* redirect stdin */
         close(0);
         dup2(pipefds[0], 0);
         close(pipefds[0]);
         /* exec the target */
-        execve("/usr/bin/wc", args1, NULL); /* no return if success */
+        execvpe("wc", args1, NULL); /* no return if success */
         printf("pid %d: I am back, something is wrong!\n", getpid());
     }   
+
     /* process A continues */
     close(pipefds[0]); /* close the read end */
     if (!(child_C = fork())) /* fork process C */
     {   
-        /**** process C ****/
+        /**** Child process C ****/
         /* redirect stdout */
         close(1) ;
         dup2(pipefds[1], 1);
         close(pipefds[1]);
         /* exec the target */
-        execve("/bin/ls", args2, NULL); /* no return if success */
+        execvpe("ls", args2, NULL); /* no return if success */
         printf("pid %d: I am back, something is wrong!\n", getpid( ));
     }   
     /* process A continues */
