@@ -1,0 +1,54 @@
+{
+    "uploadid": "UP000000",
+    "code": "0",
+    "msg": " This  is  a  ",
+    "files":
+    [
+        {
+            "code": "0",
+            "msg": "",
+            "filename": "1D_16-35_1.jpg",
+            "filesize": "196690",
+            "width": "1024",
+            "height": "682",
+            "images":
+            [
+                {
+                    "url": "fmn061/2011_1",
+                    "type": "large",
+                    "width": "720",
+                    "height": "479"
+                },
+                {
+                    "url": "fmn061/2011_2",
+                    "type": "main",
+                    "width": "200",
+                    "height": "133"
+                }
+            ]
+        },
+        {
+            "code": "1",
+            "msg": "File 2",
+            "filename": "1D_16-36.jpg",
+            "filesize": "196690",
+            "width": "1024",
+            "height": "682",
+            "images":
+            [
+                {
+                    "url": "fmn061/2011_3",
+                    "type": "large",
+                    "width": "720",
+                    "height": "479"
+                },
+                {
+                    "url": "fmn061/2011_4",
+                    "type": "main",
+                    "width": "200",
+                    "height": "133"
+                }
+            ]
+        }
+    ]
+}
