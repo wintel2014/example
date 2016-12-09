@@ -10,8 +10,11 @@ using namespace std;
 // The 3 parameters should be tuned
 #define TRY_SPINLOCK 0
 static int ThreadNum=40;
-#define LOOP_PER_THREAD 2
+#define LOOP_PER_THREAD 20
 
+#define X86_X64
+
+#ifdef X86_X64
 //http://blog.csdn.net/yayong/article/details/50639800
 struct TSC {
     TSC():hi(0),lo(0)
@@ -24,7 +27,7 @@ struct TSC {
     uint64_t value() {return (((uint64_t)hi << 32) | lo);}
     uint32_t hi, lo;
 };
-#define X86_X64
+#endif
 
 
 unsigned volatile long gCount=0;
@@ -45,6 +48,7 @@ class TimeCount<timespec> {
         timespec start_timer;
         timespec end_timer;
 };
+#ifdef X86_X64
 template<>
 class TimeCount<TSC> {
     public:
@@ -57,27 +61,34 @@ class TimeCount<TSC> {
         TSC start;
         TSC end;
 };
+#endif
+
 class spinlock {
-private:
-  typedef enum {Locked, Unlocked} LockState;
-  atomic<LockState> state_;
+    private:
+        typedef enum {Locked, Unlocked} LockState;
+        atomic<LockState> state_;
 
-public:
-  spinlock() : state_(Unlocked) {}
+    public:
+        spinlock() : state_(Unlocked) {}
 
-  void lock()
-  {
-    while (state_.exchange(Locked, memory_order_acquire) == Locked) {
-    #ifdef X86_X64
-        asm volatile("rep; nop" ::: "memory");  
-    #endif
-      /* busy-wait */
-    }
-  }
-  void unlock()
-  {
-    state_.store(Unlocked, memory_order_release);
-  }
+        void lock()
+        {
+#ifdef X86_X64
+            while (state_.exchange(Locked, memory_order_relaxed) == Locked) {
+                asm volatile("rep; nop" ::: "memory");  
+#else
+            while (state_.exchange(Locked, memory_order_acquire) == Locked) {
+#endif
+            }
+        }
+        void unlock()
+        {
+#ifdef X86_X64
+            state_.store(Unlocked, memory_order_relaxed);
+#else
+            state_.store(Unlocked, memory_order_release);
+#endif
+        }
 };
 
 #if TRY_SPINLOCK
@@ -111,8 +122,11 @@ int main()
 
     sleep(1);
     {
-        //TimeCount<timespec> T;
+#ifdef X86_X64
         TimeCount<TSC> T;
+#else
+        TimeCount<timespec> T;
+#endif
         Notify.store(true, memory_order_release);
         for(auto& it:ThreadContainer) //std::thread noncopable
             it.join();
