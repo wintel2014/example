@@ -1,22 +1,26 @@
-#include <boost/atomic.hpp>
+#include <iostream>       // std::cout
+#include <atomic>         // std::atomic
+#include <thread>         // std::thread
+#include <vector>         // std::vector
+using namespace std;
 
 class spinlock {
 private:
   typedef enum {Locked, Unlocked} LockState;
-  boost::atomic<LockState> state_;
+  atomic<LockState> state_;
 
 public:
   spinlock() : state_(Unlocked) {}
 
   void lock()
   {
-    while (state_.exchange(Locked, boost::memory_order_acquire) == Locked) {
+    while (state_.exchange(Locked, memory_order_acquire) == Locked) {
       /* busy-wait */
     }
   }
   void unlock()
   {
-    state_.store(Unlocked, boost::memory_order_release);
+    state_.store(Unlocked, memory_order_release);
   }
 };
 

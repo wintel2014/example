@@ -9,20 +9,20 @@ std::atomic<int> flag = {0};
 void thread_1()
 {
     data.push_back(42);
-    flag.store(1, std::memory_order_release);
+    flag.store(1, std::memory_order_relaxed);
 }
  
 void thread_2()
 {
     int expected=1;
-    while (!flag.compare_exchange_strong(expected, 2, std::memory_order_acq_rel)) {
+    while (!flag.compare_exchange_strong(expected, 2, std::memory_order_relaxed)) {
         expected = 1;
     }
 }
  
 void thread_3()
 {
-    while (flag.load(std::memory_order_acquire) < 2)
+    while (flag.load(std::memory_order_relaxed) < 2)
         ;
     assert(data.at(0) == 42); // will never fire
 }
