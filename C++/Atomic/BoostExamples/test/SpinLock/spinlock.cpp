@@ -39,7 +39,7 @@ class TimeCount;
 template<>
 class TimeCount<timespec> {
     public:
-        TimeCount() {clock_gettime(CLOCK_REALTIME, &start_timer);}
+        TimeCount() {clock_gettime(CLOCK_MONOTONIC_RAW, &start_timer);}
         ~TimeCount() {    clock_gettime(CLOCK_REALTIME, &end_timer); 
                           long t=(end_timer.tv_sec-start_timer.tv_sec)*1000000+end_timer.tv_nsec/1000-start_timer.tv_nsec/1000;
                           cout<<t<<" us is consumed\n";
