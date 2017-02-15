@@ -1,0 +1,4 @@
+the initialization order of global variable "Test t" and static member variable "Test::a Test::b" are not defined.
+it depends on the files order depends on link step for gcc.
+
+static member variable is diffenrent with local static variable.
