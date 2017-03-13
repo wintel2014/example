@@ -16,41 +16,35 @@ class MemoryBlock
             }
         }
 
-        // 拷贝构造器（实现拷贝语义：拷贝that）
         MemoryBlock(const MemoryBlock& that)
-            // 拷贝that对象所拥有的资源
             : _length(that._length),
               _data(new int[that._length])
         {
             std::copy(that._data, that._data + _length, _data);
         }
 
-        // 赋值运算符（实现拷贝语义：释放this ＋ 拷贝that）
         MemoryBlock& operator=(const MemoryBlock& that)
         {
             if (this != &that)
             {
-                // 释放自身的资源
                 delete[] _data;
 
-                // 拷贝that对象所拥有的资源
                 _length = that._length;
                 _data = new int[_length];
                 std::copy(that._data, that._data + _length, _data);
             }
             return *this;
         }
-
-        // 移动构造器（实现移动语义：移动that）
+        
+        // Move Construct
         MemoryBlock(MemoryBlock&& that)
-            // 将自身的资源指针指向that对象所拥有的资源
             : _length(that._length), 
               _data(that._data)
-    {
-        // 将that对象原本指向该资源的指针设为空值
-        that._data = nullptr;
-        that._length = 0;
-    }
+        {
+            // 将that对象原本指向该资源的指针设为空值
+            that._data = nullptr;
+            that._length = 0;
+        }
 
         // 移动赋值运算符（实现移动语义：释放this ＋ 移动that）
         MemoryBlock& operator=(MemoryBlock&& that)
