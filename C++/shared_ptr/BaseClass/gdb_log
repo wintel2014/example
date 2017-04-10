@@ -1,0 +1,20 @@
+boost::detail::sp_counted_base::release (this=0x804c018) at /usr/include/boost/smart_ptr/detail/sp_counted_base_gcc_x86.hpp:144
+144	        if( atomic_exchange_and_add( &use_count_, -1 ) == 1 )
+(gdb) n
+146	            dispose();
+(gdb) s
+boost::detail::sp_counted_impl_p<DeriveClass>::dispose (this=0x804c018) at /usr/include/boost/smart_ptr/detail/sp_counted_impl.hpp:78
+78	        boost::checked_delete( px_ );
+(gdb) s
+boost::checked_delete<DeriveClass> (x=0x804c008) at /usr/include/boost/checked_delete.hpp:34
+34	    delete x;
+(gdb) p x
+$8 = (DeriveClass *) 0x804c008
+(gdb) bt
+#0  boost::checked_delete<DeriveClass> (x=0x804c008) at /usr/include/boost/checked_delete.hpp:34
+#1  0x08049062 in boost::detail::sp_counted_impl_p<DeriveClass>::dispose (this=0x804c018) at /usr/include/boost/smart_ptr/detail/sp_counted_impl.hpp:78
+#2  0x08048c14 in boost::detail::sp_counted_base::release (this=0x804c018) at /usr/include/boost/smart_ptr/detail/sp_counted_base_gcc_x86.hpp:146
+#3  0x08048c94 in boost::detail::shared_count::~shared_count (this=0xbffff65c, __in_chrg=<optimized out>) at /usr/include/boost/smart_ptr/detail/shared_count.hpp:371
+#4  0x08048d92 in boost::shared_ptr<Base>::~shared_ptr (this=0xbffff658, __in_chrg=<optimized out>) at /usr/include/boost/smart_ptr/shared_ptr.hpp:328
+#5  0x08048a81 in main () at BaseClass.cpp:30
+
