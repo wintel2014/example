@@ -12,7 +12,7 @@ class Base
         virtual void show(U a) {cout<<"Base:: "<<a<<endl;} //error: templates may not be ‘virtual’
 */
         template<typename U>
-        void show(U a) {cout<<"Base:: "<<a<<endl;} //error: templates may not be ‘virtual’
+        void show(U a) {cout<<"Base:: "<<a<<endl;}
 };
 
 
@@ -28,6 +28,12 @@ class Derive2: public Base<int>
         virtual void show(int a) {cout<<"Derive2:: "<<a<<endl;}
 };
 
+template <typename T>
+class Derive3: public Base<T>
+{
+    public:
+        virtual void show(T a) {cout<<"Derive3:: "<<a<<endl;}
+};
 int main()
 {
     Derive* pD=new Derive();
@@ -38,4 +44,9 @@ int main()
     Derive2* pD2=new Derive2();
     pB=pD2;
     pB->show(123);
+
+
+    Derive3<double>* pD3=new Derive3<double>();
+    Base<double> *pB_double=pD3;
+    pB_double->show(123.123);
 }
