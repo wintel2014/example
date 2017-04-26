@@ -5,28 +5,18 @@ using namespace std;
 class Base
 {
     public:
-        virtual  void test1(int a)
+        virtual void test()
         {
-            cout << "This is the Base::test1" << a << endl;
-        }
-
-        virtual void test2()
-        {
-            cout << "This is the Base::test2" << endl;
+            cout << "This is the Base::test" << endl;
         }
 };
 
 class Derive: public Base
 {
     public:
-        void test1(int a)
+        void test() 
         {
-            cout << "This is Derive::test1" << a << endl;
-        }
-
-        void test2() 
-        {
-            cout << "This is Derive::test2" << endl;
+            cout << "This is Derive::test" << endl;
         }
 };
 
@@ -34,19 +24,21 @@ int main()
 {
     Derive derive;
     Base base=derive;
+    Base* pB=&derive;
 
-    boost::bind(&Base::test2,_1) (&derive);
-    boost::bind(&Base::test2,_1) (derive);
-    boost::bind(&Base::test2,_1) (base);
+    boost::bind(&Base::test,_1) (&derive);
+    boost::bind(&Base::test,_1) (pB);
+    boost::bind(&Base::test,pB) ();
+    boost::bind(&Base::test,_1) (base);
 
-    //cout<<&Derive::test2<<endl;
-    printf("%p\n",(void*)&Derive::test2);
-    printf("%p\n",(void*)&Derive::test2);
+    //cout<<&Derive::test<<endl;
+    printf("%p\n",reinterpret_cast<void*>(&Derive::test));
+    printf("%p\n",(void*)&Derive::test);
 
     void (Derive::*MemFunPtr)();
     MemFunPtr = NULL;
-    printf("%x\n", (int*)reinterpret_cast<void* >(MemFunPtr)); //segmen fault
-    MemFunPtr=&Derive::test2;
+    printf("%p\n", (int*)reinterpret_cast<void* >(MemFunPtr)); //segmen fault
+    MemFunPtr=&Derive::test;
     (derive.*MemFunPtr)();
 /* 
 error: pointer to member type ‘void (Derive::)()’ incompatible with object type ‘Base’
