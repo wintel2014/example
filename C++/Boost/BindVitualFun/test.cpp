@@ -36,8 +36,10 @@ int main()
     printf("%p\n",(void*)&Derive::test);
 
     void (Derive::*MemFunPtr)();
-    MemFunPtr = NULL;
+/*
+    MemFunPtr=&Derive::test;
     printf("%p\n", (int*)reinterpret_cast<void* >(MemFunPtr)); //segmen fault
+*/
     MemFunPtr=&Derive::test;
     (derive.*MemFunPtr)();
 /* 

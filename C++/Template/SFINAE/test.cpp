@@ -3,14 +3,14 @@
 template <class T>
 struct is_pointer
 {
-  //template <class U>
-  //static char is_ptr(U *);
+  template <class U>
+  static char is_ptr(U *);
 
- // template <class X, class Y>
- // static char is_ptr(Y X::*);
+  template <class X, class Y>
+  static char is_ptr(Y X::*);
 
-  //template <class U>
-  //static char is_ptr(U (*)());
+  template <class U>
+  static char is_ptr(U (*)());
 
   static double is_ptr(...);
 

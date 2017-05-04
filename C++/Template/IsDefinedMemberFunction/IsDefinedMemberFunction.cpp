@@ -64,6 +64,7 @@ struct is_defined_member_function4
     template<typename U, bool (U::*)(int)>
     struct traits_helper;
     
+    //U::Add is intance rather than type
     template<typename U>
     static int f(traits_helper<U, &U::Add>*);
     template<typename U>
