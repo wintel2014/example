@@ -8,14 +8,25 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <sys/shm.h>
+#include <error.h>
+#include <errno.h>
+
+#include <signal.h>
 
 #define MYPORT  8887
 #define BUFFER_SIZE 1024
 
 #define IP "10.8.5.194"
 
+void sig_pipe(int sig)
+{
+    printf("Receive sigpipe %s!!!\n", strsignal(sig));
+}
+
 int main()
 {
+
+    signal(SIGPIPE, sig_pipe);
     ///定义sockfd
     int sock_cli = socket(AF_INET,SOCK_STREAM, 0);
 
@@ -40,10 +51,33 @@ int main()
 
     while (fgets(sendbuf, sizeof(sendbuf), stdin) != NULL)
     {
-        send(sock_cli, sendbuf, strlen(sendbuf),0); ///发送
+        int len=-1;
+        len = send(sock_cli, sendbuf, strlen(sendbuf),0); ///发送
+        if(len < 0)
+        {
+
+            printf("send error: %s\n", strerror(errno));
+            return len;
+        }
+        else if(len == 0)
+        {
+            printf("send: peer has performed an orderly shutdown.\n");
+        }
+
         if(strcmp(sendbuf,"exit\n")==0)
             break;
-        recv(sock_cli, recvbuf, sizeof(recvbuf),0); ///接收
+
+        len = recv(sock_cli, recvbuf, sizeof(recvbuf),0); ///接收
+        if(len < 0)
+        {
+
+            printf("recv error: %s\n", strerror(errno));
+            return len;
+        }
+        else if(len == 0)
+        {
+            printf("recv: peer has performed an orderly shutdown.\n");
+        }
         fputs(recvbuf, stdout);
 
         memset(sendbuf, 0, sizeof(sendbuf));
