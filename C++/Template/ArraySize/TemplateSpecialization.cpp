@@ -43,6 +43,11 @@ void array_size_func(T (&a)[N])
     cout<<"N="<<N<<" "<<typeid(a).name()<<endl;
 }
 
+template<typename T>
+void array_size_func(T (&a)[100])
+{
+    cout<<"N="<<100<<" (specialization by constant) "<<typeid(a).name()<<endl;
+}
 
 int main()
 {
@@ -55,4 +60,7 @@ int main()
 
     int a[10];
     array_size_func(a);
+    
+    int a2[100];
+    array_size_func(a2);
 }
