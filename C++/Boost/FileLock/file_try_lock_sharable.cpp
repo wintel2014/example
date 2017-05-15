@@ -21,7 +21,7 @@ int main()
   try { 
     file_lock f_lock(fileName.c_str());
 
-    std::cout<<"TryLock ="<<f_lock.try_lock()<<"\n";
+    std::cout<<"TryLock ="<<f_lock.try_lock_sharable()<<"\n";
     sleep(15);
     f_lock.unlock();
 
