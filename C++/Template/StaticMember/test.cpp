@@ -1,19 +1,22 @@
-#include<iostream>  
-using namespace std;  
-  
-template <class T>  
-class A  
-{  
-    public:  
-        A(T a):m(a){n+=m;}  
-        void disp(){cout<<"m="<<m<<", n="<<n<<endl;}  
+#include <iostream>
+#include <string>
+using namespace std;
+
+template <class T>
+class A
+{
+    public:
+        A(T a):m(a){n++;}
+        void disp(){cout<<"m="<<m<<", n="<<n<<endl;}
+
+//Each instance has one static variable
+        static T n;
     private:
-        T m;  
-        static T n;  
-};  
-  
-template <class T>  
-T A<T>::n = 0; //静态数据成员的初始化  
+        T m;
+};
+
+template <class T>
+T A<T>::n = 0; //静态数据成员的初始化
 
 
 template<typename T>
@@ -24,28 +27,30 @@ class Test {
         static int mStaticVar;
 };
 template<>
-int Test<int>::mStaticVar=123;
+int Test<int>::mStaticVar=1111;
 
 template<>
-int Test<double>::mStaticVar=1234;
+int Test<double>::mStaticVar=2222;
 
 template<typename T>
-int Test<T>::mStaticVar=12345;
-  
-int main()  
-{  
-    A<int>  a(2), b(3);  
-    A<double> c(1.2),d(4.6);  
-    a.disp();  
-    b.disp();  
+int Test<T>::mStaticVar=3333;
 
-    c.disp();  
-    d.disp();  
+int main()
+{
+    A<int>  a(2), b(3);
+    A<double> c(1.2),d(4.6);
+    cout<<&A<int>::n<<" "<<&A<double>::n<<"\n\n";
+    a.disp();
+    b.disp();
+
+    c.disp();
+    d.disp();
+    cout<<"\n\n";
 
 
     Test<int> Tint;
     Test<string> Tstring;
     Tint.show();
     Tstring.show();
-    return 0;  
-}  
+    return 0;
+}
