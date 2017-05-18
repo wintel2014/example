@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -19,6 +20,9 @@ static void *WaitThread(void *arg)
         {
             pthread_cond_wait(&cond, &mtx);
         }
+#ifdef DEBUG
+        printf("%p\n", pData);
+#endif
         *pData=1;
 
         free(pData);
