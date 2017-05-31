@@ -1,24 +1,29 @@
 #include <jsoncpp/json/json.h>
 #include<string>
 using namespace std;
-int ParseJsonFromString()  
-{  
-  const char* str = "{\"uploadid\": \"UP000000\",\"code\": 100,\"msg\": \"\",\"files\": \"\"}";  
-  
-  Json::Reader reader;  
-  Json::Value root;  
-  if (reader.parse(str, root))  // reader将Json字符串解析到root，root将包含Json里所有子元素   
-  {  
-    std::string upload_id = root["uploadid"].asString();  // 访问节点，upload_id = "UP000000"   
-    int code = root["code"].asInt();    // 访问节点，code = 100   
-    cout<<upload_id<<":"<<code<<"   isArray="<<root.isArray()<<endl;
-  }  
-  return 0;  
-} 
+int ParseJsonFromString()
+{
+    const char* str = "{\"uploadid\": \"000000\",\"code\":100,\"msg\": \"\",\"files\": [{\"name\":\"json_test\"}, \"ArrayElementVariable\"] }";
+
+    Json::Reader reader;
+    Json::Value root;
+    if (reader.parse(str, root))  // reader将Json字符串解析到root，root将包含Json里所有子元素
+    {
+        std::string upload_id = root["uploadid"].asString();
+        int code = root["code"].asInt();    // 访问节点，code = 100
+        cout<<upload_id<<":"<<code<<"   isArray="<<root.isArray()<<"  files:"<<root["files"][0]["name"].asString()<<"  ArrayElementAceess:"<<root["files"][1].asString()<<endl;
+    }
+    else
+    {
+        std::cout<<"Failed to parse\n";
+    }
+    return 0;
+}
 
 int main()
 {
     ParseJsonFromString();
+    std::cout<<"\n\n";
 
     Json::Value root=string("JsonStringConstructor");
     cout<<root.asString()<<endl;
@@ -44,11 +49,21 @@ int main()
     array[10]=right;
     array[10]=left;
 
-    cout<<array.isArray()<<"  arraysize="<<array.size()<<"  "<<left.isArray()<<" empty="<<left.empty()<<"  empty="<<right.empty()<<endl;
+    cout<<array.isArray()<<"  arraysize="<<array.size()<<"  left.isArray="<<left.isArray()<<" empty="<<left.empty()<<"  empty="<<right.empty()<<endl;
 
     for(int index=0; index<array.size(); index++)
     {
-        cout<<"array[index].empty="<<array[index].empty()<<endl;
+        cout<<"array["<<index<<"].empty="<<array[index].empty()<<endl;
+    }
+
+    cout<<"=========================================\n";
+    Json::Value output(Json::arrayValue);
+    output[1]=1;
+    output.append(2);
+    output.append(Json::Value(3));
+    for(int index=0; index<output.size(); index++)
+    {
+        cout<<"array["<<index<<"].empty="<<output[index].empty()<<endl;
     }
 }
 
