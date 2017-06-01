@@ -1,12 +1,12 @@
 #include <jsoncpp/json/json.h>
 #include<string>
 using namespace std;
-int ParseJsonFromString()
+int ParseJsonFromString(Json::Value &root)
 {
     const char* str = "{\"uploadid\": \"000000\",\"code\":100,\"msg\": \"\",\"files\": [{\"name\":\"json_test\"}, \"ArrayElementVariable\"] }";
 
+    cout<<"Origin String:\n"<<"    "<<str<<endl;
     Json::Reader reader;
-    Json::Value root;
     if (reader.parse(str, root))  // reader将Json字符串解析到root，root将包含Json里所有子元素
     {
         std::string upload_id = root["uploadid"].asString();
@@ -20,13 +20,18 @@ int ParseJsonFromString()
     return 0;
 }
 
+
 int main()
 {
-    ParseJsonFromString();
+    Json::Value root;
+    ParseJsonFromString(root);
     std::cout<<"\n\n";
 
-    Json::Value root=string("JsonStringConstructor");
-    cout<<root.asString()<<endl;
+    cout<<root.toStyledString()<<endl<<endl;
+
+    Json::FastWriter writer;
+    std::string str = writer.write(root);
+    std::cout<<str<<endl<<endl;
 
 
     Json::Value array;
