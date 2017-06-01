@@ -1,9 +1,11 @@
 #include <jsoncpp/json/json.h>
 #include<string>
+//Json::value consists of multiple {Key:Vaue}
+//Array consists of [object1, object2, ..., value1, value2,...]
 using namespace std;
 int ParseJsonFromString(Json::Value &root)
 {
-    const char* str = "{\"uploadid\": \"000000\",\"code\":100,\"msg\": \"\",\"files\": [{\"name\":\"json_test\"}, \"ArrayElementVariable\"] }";
+    const char* str = "{\"uploadid\": \"000000\",\"code\":100,\"msg\": \"\",\"files\": [{\"name\":\"json_test\", \"ISBN\":\"12345\"}, \"ArrayElementVariable\"] }";
 
     cout<<"Origin String:\n"<<"    "<<str<<endl;
     Json::Reader reader;
@@ -11,7 +13,7 @@ int ParseJsonFromString(Json::Value &root)
     {
         std::string upload_id = root["uploadid"].asString();
         int code = root["code"].asInt();    // 访问节点，code = 100
-        cout<<upload_id<<":"<<code<<"   isArray="<<root.isArray()<<"  files:"<<root["files"][0]["name"].asString()<<"  ArrayElementAceess:"<<root["files"][1].asString()<<endl;
+        cout<<"uploadid:"<<upload_id<<"  code:"<<code<<"   isArray="<<root.isArray()<<"  files:"<<root["files"][0]["name"].asString()<<"  ArrayElementAceess:"<<root["files"][1].asString()<<endl;
     }
     else
     {
