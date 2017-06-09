@@ -1,11 +1,12 @@
 #include <jsoncpp/json/json.h>
-#include<string>
+#include <string>
+#include <stdio.h>
 //Json::value consists of multiple {Key:Vaue}
 //Array consists of [object1, object2, ..., value1, value2,...]
 using namespace std;
 int ParseJsonFromString(Json::Value &root)
 {
-    const char* str = "{\"uploadid\": \"000000\",\"code\":100,\"msg\": \"\",\"files\": [{\"name\":\"json_test\", \"ISBN\":\"12345\"}, \"ArrayElementVariable\"] }";
+    const char* str = "{\"uploadid\": \"000000\",\"code\":100,\"msg\": {\"version\":123, \"time\":\"20170609\"},\"files\": [{\"name\":\"json_test\", \"ISBN\":\"12345\"}, \"ArrayElementVariable\"] }";
 
     cout<<"Origin String:\n"<<"    "<<str<<endl;
     Json::Reader reader;
@@ -13,7 +14,7 @@ int ParseJsonFromString(Json::Value &root)
     {
         std::string upload_id = root["uploadid"].asString();
         int code = root["code"].asInt();    // 访问节点，code = 100
-        cout<<"uploadid:"<<upload_id<<"  code:"<<code<<"   isArray="<<root.isArray()<<"  files:"<<root["files"][0]["name"].asString()<<"  ArrayElementAceess:"<<root["files"][1].asString()<<endl;
+        cout<<"uploadid:"<<upload_id<<"  code:"<<code<<"  version="<<root["msg"]["version"]<<"   isArray="<<root.isArray()<<"  files:"<<root["files"][0]["name"].asString()<<"  ArrayElementAceess:"<<root["files"][1].asString()<<endl;
     }
     else
     {
@@ -31,11 +32,21 @@ int main()
 
     cout<<root.toStyledString()<<endl<<endl;
 
+    Json::Value d;
+    d["data"]=1.00000000001234567890000000000000000001;
+    cout<<d.toStyledString()<<"\n"<<d["data"].asDouble()<<endl<<endl;
+    printf("%.30lf\n", d["data"].asDouble());
+    
+
     Json::FastWriter writer;
     std::string str = writer.write(root);
     std::cout<<str<<endl<<endl;
 
+    Json::Value empty;
+    empty["code"] = 1;
+    cout<<empty["code"]<<"  "<<empty["code"].asInt()<<endl;
 
+    
     Json::Value array;
     Json::Value left;
     Json::Value middle;
@@ -48,6 +59,7 @@ int main()
     middle["2"]="M3";
     middle["3"]="M3";
 
+    array[0]=left;
     array[1]=left;
     array[2]=left;
     array[3]=middle;
