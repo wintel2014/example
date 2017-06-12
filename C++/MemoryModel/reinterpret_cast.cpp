@@ -1,20 +1,34 @@
 #include <iostream>
 using namespace std;
 
+/*
+|__vptr__|---->C::show()
+|        |     B::display()
+|        |     B::show2()
+|        |
+|________|
+|        |___
+|        |   |
+|________|   |___>C::show()
+                  A::show2()  
+
+
+
+*/
 class A
 {
     public:
-        virtual void show() {cout<<"A::show\n";}
-        virtual void show2() {cout<<"A::show2\n";}
+        virtual void show() {cout<<"A::show this="<<this<<endl;}
+        virtual void show2() {cout<<"A::show2 this="<<this<<endl;}
     private:
         int a;
 };
 class B
 {
     public:
-        virtual void show() {cout<<"B::show\n";}
-        virtual void Display() {cout<<"B::Display\n";}
-        virtual void show2() {cout<<"B::show2\n";}
+        virtual void show() {cout<<"B::show this="<<this<<endl;}
+        virtual void display() {cout<<"B::display this="<<this<<endl;}
+        virtual void show2() {cout<<"B::show2 this="<<this<<endl;}
     private:
         double b;
 };
@@ -22,7 +36,7 @@ class B
 class C:public B, public A
 {
     public:
-        void show() {cout<<"C::show\n";}
+        void show() {cout<<"C::show this="<<this<<endl;}
 };
 
 int main()
@@ -34,9 +48,10 @@ int main()
     pA->show();
 
     B* pB=reinterpret_cast<B*>(pA);
+    B* pB_dynamic_cast = dynamic_cast<B*>(pA);
     pB->show();
-    pB->Display();
+    pB->display();
 
-    cout<<"pA="<<pA<<"   pB="<<pB<<"   pC="<<&c<<endl;
+    cout<<"pA="<<pA<<"   pB="<<pB<<"("<<pB_dynamic_cast<<")   pC="<<&c<<endl;
 
 }
