@@ -3,6 +3,17 @@
 #include <mutex>
 using namespace std;
 
+//#define JOINED_IN_SINGLE_THREAD
+/*
+when JOINABLE_UN_THREADSAFE is not defined!!
+Join now
+Join now
+Join now
+terminate called recursively
+terminate called after throwing an instance of 'std::system_error'
+Aborted (core dumped)
+*/
+
 mutex M;
 void work_thread() 
 {
@@ -11,28 +22,24 @@ void work_thread()
  
 void join(thread* t)
 {
-#if 1
-//    lock_guard<mutex> guard(M);
+#ifdef JOINABLE_UN_THREADSAFE
+    lock_guard<mutex> guard(M);
+#endif
     volatile int count;
-    while(count++ < 1000000000) ;
+    while(count++ < 1000) ;
 
     if(t->joinable()) {
         cout<<"Join now\n";
         t->join();
+        cout<<"Join exit\n";
     } else
         cout<<"Joined before\n";
-#else
-/* terminate called recursively */
-    t->join();
-#endif
     
 }
-//#define JOINED_IN_SINGLE_THREAD
 int main() 
 {
     thread worker(work_thread);
     thread *pWorker = & worker;
-    join(pWorker);
 
 #ifdef JOINED_IN_SINGLE_THREAD
     join(pWorker);
@@ -44,7 +51,7 @@ int main()
 
     join_thread1.join();
     join_thread2.join();
-    join_thread3.join();
+    //join_thread3.join();
 #endif
 
     return 0;
