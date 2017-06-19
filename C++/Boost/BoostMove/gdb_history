@@ -1,0 +1,135 @@
+b main
+r
+n
+s
+s
+n
+q
+l
+b main
+r
+n
+s
+l
+whatis rv
+whatis T
+whatis enable_move_utility_emulation<T>::value
+l
+l 50
+s
+l
+whatis T
+whatis ::boost::move_detail::addr_impl_ref<T>
+whatis ::boost::move_detail::addr_impl_ref<clone_ptr<Base>>
+whatis 'boost::move_detail::addr_impl_ref<clone_ptr<Base> >'
+l
+s
+l
+whatis T
+s
+s
+l
+s
+s
+l
+s
+l
+l 1
+whatis 'boost::move_detail::enable_if_c<true, boost::rv<clone_ptr<Base> >&>::type
+whatis 'boost::move_detail::enable_if_c<true, boost::rv<clone_ptr<Base> >&>::type'
+whatis boost::rv<clone_ptr<Base> > 
+s
+l
+print BOOST_RV_REF
+whatis BOOST_RV_REF
+whatis '
+whatis 'BOOST_RV_REF'
+p 'BOOST_RV_REF_BEG' 
+q
+b main
+r
+n
+s
+s
+p 'boost::move_detail::addr_impl_ref<T>( v ), 0)'
+p boost::move_detail::addr_impl_ref<T>( v ), 0
+p boost::move_detail::addr_impl_ref<T>( v ), 0)
+n
+l
+n
+l
+s
+n
+r
+n
+s
+s
+s
+s
+s
+s
+s
+l
+s
+l
+s
+s
+s
+n
+r
+n
+s
+s
+l
+n
+s
+l
+s
+l
+p BOOST_RV_REF
+b 34
+r
+c
+l
+p BOOST_RV_REF
+whatis BOOST_RV_REF
+p 'BOOST_RV_REF_END' 
+p 'BOOST_RV_REF_BEG' 
+macro expand  BOOST_RV_REF(clone_ptr)
+macro expand BOOST_RV_REF_END
+macro expand BOOST_RV_REF_BEG
+r
+l
+l 1
+macro expand BOOST_COPYABLE_AND_MOVABLE(clone_ptr)
+set print pretty on
+macro expand BOOST_COPYABLE_AND_MOVABLE(clone_ptr)
+macro expand BOOST_COPY_ASSIGN_REF(clone_ptr)
+macro expand BOOST_RV_REF(clone_ptr)
+macro expand BOOST_COPY_ASSIGN_REF(clone_ptr)
+info b
+d  2
+r
+n
+s
+l
+q
+b main
+r
+n
+n
+n
+s
+l
+q
+b main
+r
+n
+n
+n
+n
+s
+l
+s
+l
+q
