@@ -1,0 +1,63 @@
+man signal
+
+
+   Portability
+       The  only  portable  use  of  signal() is to set a signal's disposition to SIG_DFL or SIG_IGN.  The semantics when using signal() to establish a signal handler vary across systems (and POSIX.1
+       explicitly permits this variation); do not use it for this purpose.
+
+       POSIX.1 solved the portability mess by specifying sigaction(2), which provides explicit control of the semantics when a signal handler is invoked; use that interface instead of signal().
+
+       In the original UNIX systems, when a handler that was established using signal() was invoked by the delivery of a signal, the disposition of the signal would be reset to SIG_DFL, and the  sys‐
+       tem did not block delivery of further instances of the signal.  This is equivalent to calling sigaction(2) with the following flags:
+
+           sa.sa_flags = SA_RESETHAND | SA_NODEFER;
+
+       System V also provides these semantics for signal().  This was bad because the signal might be delivered again before the handler had a chance to reestablish itself.  Furthermore, rapid deliv‐
+       eries of the same signal could result in recursive invocations of the handler.
+
+       BSD improved on this situation, but unfortunately also changed the semantics of the existing signal() interface while doing so.  On BSD, when a signal handler is invoked, the  signal  disposi‐
+       tion  is not reset, and further instances of the signal are blocked from being delivered while the handler is executing.  Furthermore, certain blocking system calls are automatically restarted
+       if interrupted by a signal handler (see signal(7)).  The BSD semantics are equivalent to calling sigaction(2) with the following flags:
+
+           sa.sa_flags = SA_RESTART;
+
+       The situation on Linux is as follows:
+
+       * The kernel's signal() system call provides System V semantics.
+
+       * By default, in glibc 2 and later, the signal() wrapper function does not invoke the kernel system call.  Instead, it calls sigaction(2) using flags that supply BSD semantics.   This  default
+         behavior  is  provided  as  long  as  the _BSD_SOURCE feature test macro is defined.  By default, _BSD_SOURCE is defined; it is also implicitly defined if one defines _GNU_SOURCE, and can of
+         course be explicitly defined.
+
+         On glibc 2 and later, if the _BSD_SOURCE feature test macro is not defined, then signal() provides System V semantics.  (The default implicit definition of _BSD_SOURCE is not provided if one
+         invokes  gcc(1)  in  one  of  its  standard  modes  (-std=xxx  or  -ansi)  or  defines  various  other  feature  test  macros  such as _POSIX_SOURCE, _XOPEN_SOURCE, or _SVID_SOURCE; see fea‐
+         ture_test_macros(7).)
+
+       * The signal() function in Linux libc4 and libc5 provide System V semantics.  If one on a libc5 system includes <bsd/signal.h> instead of <signal.h>, then signal() provides BSD semantics.
+
+
+
+jiazi@ubuntu:~/bin/example/Linux/Signal/signal_handler_resrt_SIG_DFL$ ldd --version
+ldd (Ubuntu EGLIBC 2.19-0ubuntu6.11) 2.19
+Copyright (C) 2014 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Written by Roland McGrath and Ulrich Drepper.
+
+
+jiazi@ubuntu:~/bin/example/Linux/Signal/signal_handler_resrt_SIG_DFL$ /lib/i386-linux-gnu/libc.so.6
+GNU C Library (Ubuntu EGLIBC 2.19-0ubuntu6.11) stable release version 2.19, by Roland McGrath et al.
+Copyright (C) 2014 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+Compiled by GNU CC version 4.8.4.
+Compiled on a Linux 3.13.11 system on 2017-03-21.
+Available extensions:
+	crypt add-on version 2.1 by Michael Glad and others
+	GNU Libidn by Simon Josefsson
+	Native POSIX Threads Library by Ulrich Drepper et al
+	BIND-8.2.3-T5B
+libc ABIs: UNIQUE IFUNC
+For bug reporting instructions, please see:
+<https://bugs.launchpad.net/ubuntu/+source/eglibc/+bugs>.
