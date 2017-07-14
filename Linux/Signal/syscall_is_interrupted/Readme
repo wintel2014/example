@@ -1,0 +1,11 @@
+$ ./read_interrupted
+Read finished
+$ ./read_interrupted
+^CSIGINT caught!
+Read Interrupted by Signal
+
+分析及结论：
+我们需要执行a.out程序两次，第一次将消耗random设备缓存里的随机数，然后立即运行第二次，这时候read()发生了阻塞。
+我们立即发送SIGINT信号，输出结果为Read Interrupted by Signal
+这表明：signal()确实中断了系统调用。能够被中断的系统调用还有：ioctl, read, readv, write, writev, wait, waitpid。
+
