@@ -1,6 +1,8 @@
 #include <iostream>
 #include <type_traits>
-#include<vector>
+#include <vector>
+#include <boost/utility/enable_if.hpp>
+#include <typeinfo>
 
 using namespace std;
 
@@ -64,14 +66,14 @@ struct is_defined_member_function4
     template<typename U, bool (U::*)(int)>
     struct traits_helper;
     
-    //U::Add is intance rather than type
+    //U::Add is instance rather than type
     template<typename U>
     static int f(traits_helper<U, &U::Add>*);
     template<typename U>
     static char f(...);
 
-    enum {value = sizeof(f<T>(0)) == sizeof(int)};
-    const static bool defined = sizeof(f<T>(0)) == sizeof(int);
+    enum {value = sizeof(f<T>(nullptr)) == sizeof(int)};
+    const static bool defined = sizeof(f<T>(nullptr)) == sizeof(int);
 };
 
 template<typename T>
@@ -90,6 +92,28 @@ struct is_defined_member_function5<traits_helper<T, &T::Add> >
     enum {value=1};
 };
 
+template<typename T, typename enable_if<is_defined_member_function4<T>::value>::type*p = nullptr>
+bool foo (T t)
+{
+    cout<<"Member function is defined\n";
+}
+template<typename T, typename enable_if<!is_defined_member_function4<T>::value, bool>::type f= false>
+bool foo (T t)
+{
+    cout<<"Member function is not defined\n";
+}
+/*
+template<typename T>
+bool foo (T t, typename enable_if<is_defined_member_function4<T>::value>::type* p=nullptr)
+{
+    cout<<"Member function is defined\n";
+}
+template<typename T>
+bool foo (T t)
+{
+    cout<<"Member function is not defined\n";
+}
+*/
 int main()
 {
     cout<<is_defined_member_function<Test>::value<<endl;
@@ -97,8 +121,11 @@ int main()
     //cout<<is_defined_member_function3<Empty>::value<<endl; //Compile ERROR
 
     cout<<"================================================\n";
+    foo(Test());
+    foo(Empty());
     cout<<is_defined_member_function4<Test>::value<<endl;
     cout<<is_defined_member_function4<Empty>::value<<endl;
+    cout<<is_defined_member_function4<Test>::value<<endl;
 
     cout<<"================================================\n";
     cout<<is_defined_member_function5<traits_helper<Test, &Test::Add>>::value<<endl;
