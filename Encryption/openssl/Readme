@@ -1,0 +1,20 @@
+version    用于查看版本信息
+enc        用于加解密
+ciphers    列出加密套件
+genrsa    用于生成私钥
+rsa        RSA密钥管理(例如:从私钥中提取公钥)
+req        生成证书签名请求(CSR)
+crl        证书吊销列表(CRL)管理
+ca         CA管理(例如对证书进行签名)
+dgst      生成信息摘要
+rsautl    用于完成RSA签名、验证、加密和解密功能
+passwd    生成散列密码
+rand      生成伪随机数
+speed      用于测试加解密速度                    
+s_client  通用的SSL/TLS客户端测试工具
+X509       X.509证书管理
+verify      X.509证书验证
+pkcs7       PKCS#7协议数据管理
+
+
+certificate signing request (CSR)
