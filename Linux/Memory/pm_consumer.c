@@ -8,7 +8,7 @@ int consume_pm_MB(size_t M)
 {
     void * block;
     void * tmpblock;
-    size_t blocksize[]={1024*1024, 1024, 1};  
+    size_t blocksize[]={1024*1024, 1024, 1};
     int i,count;
 
     size_t maximum=0;
@@ -24,9 +24,9 @@ int consume_pm_MB(size_t M)
                 free(block);
             }else{
                 break;
-            }    
-        }    
-    }    
+            }
+        }
+    }
     printf("maximum malloc size = %lf MB\n",tmpmaximum*1.0 / 1024.0 / 1024.0);
     printf("the address is [%p, %p)\n", tmpblock, (char*)tmpblock+tmpmaximum);
     tmpblock = malloc(maximum);
@@ -39,6 +39,7 @@ int consume_pm_MB(size_t M)
     }
 
     int page = 0;
+    //one page frame=4KB (1MB=256Pages)
     for(page=0; page<256*M;page++)
     {
         printf("initialize page %d\n", page);
@@ -49,7 +50,7 @@ int consume_pm_MB(size_t M)
 size_t maximum=0;
 int main(int argc,char *argv[])
 {
-    consume_pm_MB(340);
+    consume_pm_MB(2000);
     while(1)
         sleep(1);
 }
