@@ -2,6 +2,8 @@
 #include <stdio.h>
 using namespace std;
 
+//Each object has the "unique" address
+//There are 2 "Empty" objects in "Derive"
 class Empty {};
 
 class Derive: public Empty
