@@ -31,6 +31,11 @@
     234 {
     235 } 
     
+    if Line233-235 are removed, the RIGHT version can be compiled successfully, but the compilation of ERROR version is failed:
+
+    /usr/local/include/boost/smart_ptr/shared_ptr.hpp:277:46:
+                      error: no matching function for call to ¡®sp_enable_shared_from_this(boost::shared_ptr<DeriveClass>*&, DeriveClass*&, DeriveClass*&)¡¯
+     boost::detail::sp_enable_shared_from_this( ppx, p, p );
     
 */
 //#define ERROR_ENABLE  
