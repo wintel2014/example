@@ -25,13 +25,13 @@ int main()
     shared_ptr<TMemoryBuffer> mem_buf(new TMemoryBuffer);  
     shared_ptr<TBinaryProtocol> bin_proto(new TBinaryProtocol(mem_buf));  
     s1.write(bin_proto.get());  
-    mem_buf->getBuffer(&buf_ptr, &sz);  
+    mem_buf->getBuffer(&buf_ptr, &sz);  //buf_ptr: stores the binary data required by deserialization
 
     // 反序列化  
     Student s2;  
     shared_ptr<TMemoryBuffer> membuffer(new TMemoryBuffer());  
     shared_ptr<TProtocol> protocol(new TBinaryProtocol(membuffer));  
-    membuffer->resetBuffer(buf_ptr, sz);  
+    membuffer->resetBuffer(buf_ptr, sz);  //buf_ptr is loaded to protocol
     s2.read(protocol.get());  
     printf("%d %s %d %d\n", s2.sno, s2.sname.c_str(), s2.ssex, s2.sage);  
 
