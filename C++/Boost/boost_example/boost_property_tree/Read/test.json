@@ -1,0 +1,25 @@
+{  
+    "Broker":{
+        "ServerName" : "quote",
+        "IP":"120.86.120.133",
+        "Port":16000,
+        "AutoReconnect":true,
+        "User":"18926080206",
+        "Password":"190824"
+     }, 
+    
+     "Instrument":[
+        "000001.SH",
+        "ICC1.CF",
+        "002736.SZ",
+        "CF00.CZC",
+        "cu1805.DCE",
+        "al1805.SHF"
+     ], 
+    
+    "turn_cost":{  
+            "Hturn":0,  
+            "triangle":1200,  
+            "normal":[1200, 300, 60, 5]  
+    }  
+}  

@@ -1,0 +1,2 @@
+export LD_LIBRARY_PATH=/opt/Apps/local/gcc-5.3.0/lib:/opt/Apps/local/gcc-5.3.0/lib64:/opt/Apps/local/lib:/usr/local/lib:/usr/local/lib64:$LD_LIBRARY_PATH
+gdb ./deadline_timer
