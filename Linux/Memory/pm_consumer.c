@@ -7,7 +7,7 @@
 int consume_pm_MB(size_t M)
 {
     void * block;
-    void * tmpblock;
+    char* tmpblock;
     size_t blocksize[]={1024*1024, 1024, 1};
     int i,count;
 
@@ -38,7 +38,7 @@ int consume_pm_MB(size_t M)
         return -1;
     }
 
-    int page = 0;
+    size_t page = 0;
     //one page frame=4KB (1MB=256Pages)
     for(page=0; page<256*M;page++)
     {
@@ -50,7 +50,7 @@ int consume_pm_MB(size_t M)
 size_t maximum=0;
 int main(int argc,char *argv[])
 {
-    consume_pm_MB(2000);
+    consume_pm_MB(2200);
     while(1)
         sleep(1);
 }

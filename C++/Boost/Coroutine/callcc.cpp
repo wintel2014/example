@@ -19,7 +19,7 @@ int main() {
         [&a](ctx::continuation && sink){
             a=0;
             long int b=1;
-            std::cout<<"main<lambda>\n";
+            std::cout<<"main::<lambda>\n";
             for(;;){
                 sink=sink.resume();
                 std::cout <<"callcc: "<< a << "\n";

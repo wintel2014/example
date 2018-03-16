@@ -1,0 +1,4 @@
+#0  example::BookServlet_Sender_DefinedByUser_pargs::write (this=0x7fffffffdf80, oprot=0x62b650) at gen-cpp/BookServlet.cpp:100
+#1  0x00000000004050f0 in example::BookServletClient::send_Sender_DefinedByUser (this=0x7fffffffe0e0, books=...) at gen-cpp/BookServlet.cpp:308
+#2  0x000000000040502d in example::BookServletClient::Sender_DefinedByUser (this=0x7fffffffe0e0, books=...) at gen-cpp/BookServlet.cpp:297
+#3  0x000000000040b681 in main (argc=1, argv=0x7fffffffe2b8) at src/client.cpp:40

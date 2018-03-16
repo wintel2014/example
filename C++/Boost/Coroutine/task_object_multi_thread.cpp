@@ -36,19 +36,19 @@ public:
     }
     void Construct(DEventNode *pNode)
     {
-        mTaskContext =  ctx::callcc(  [this, pNode](ctx::continuation && from)->ctx::continuation &&
+        mTaskContext =  ctx::callcc(  [this, pNode](ctx::continuation && from)
                  {
                     mFromContext = from.resume();
                     while(mRun)
                     {
                         std::cout<<"Enter Task-"<<mName<<std::endl;
                         pNode->Process();
-                        std::cout<<"Exit Task-"<<mName<<std::endl;
                         sleep(1);
+                        std::cout<<"Exit Task-"<<mName<<std::endl;
                         BackToMainContext();
                     }
 
-                    std::cout<<"Exit Task-"<<mName<<std::endl;
+                    std::cout<<"!!!!!!!!!!!Task-"<<mName<<std::endl;
                     return std::move(mFromContext);
                 }
             );
@@ -59,7 +59,7 @@ public:
         if(mFromContext)
             mFromContext = mFromContext.resume();
         else
-            std::cout<<"FromContext is null!!!!!!\n";
+            std::cout<<"MainContext is null!!!!!!\n";
     }
     void Resume()
     {
@@ -105,14 +105,27 @@ int main()
     Task* pT3 = &v[2];
 
     pT1->Construct(&Node);
+
+    std::thread T1(
+        [pT1]()
+        {pT1->BackToMainContext();}
+    );
     
 
     size_t loop = 0;
     while(loop++ < 10)
     {
-        std::cout<<"Thread-"<<gettid()<<"=================1 Main::Loop"<<loop<<"================="<<std::endl;
+        if(loop == 9)
+        {
+            pT1->Stop();
+            std::cout<<"Stop T1\n";
+        }
+
+        std::cout<<"Thread-"<<gettid()<<"=================A Main::Loop"<<loop<<"================="<<std::endl;
         pT1->Resume();
-        std::cout<<"Thread-"<<gettid()<<"=================2 Main::Loop"<<loop<<"================="<<"\n\n";
+        std::cout<<"Thread-"<<gettid()<<"=================B Main::Loop"<<loop<<"================="<<"\n\n";
     }
+
+    T1.join();
 }
 

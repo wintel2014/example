@@ -1,7 +1,7 @@
 LIB_DIR=/home/jz/boost_install_dir/lib/
 INCLUDE=-I/home/jz/boost_install_dir/include/
 
-all:same_fringe fibonacci callcc task
+all:same_fringe fibonacci callcc task_object
 
 same_fringe: same_fringe.cpp
 	g++ $^ -std=c++14 $(INCLUDE) /home/jz/boost_install_dir/lib/libboost_context.a    /home/jz/boost_install_dir/lib/libboost_thread.a -g3 -o $@
@@ -14,5 +14,8 @@ fibonacci: fibonacci.cpp
 callcc:callcc.cpp	
 	g++ $^ -std=c++14 $(INCLUDE) /home/jz/boost_install_dir/lib/libboost_context.a    /home/jz/boost_install_dir/lib/libboost_thread.a -g3 -o $@
 
-task:task.cpp
-	g++ $^ -std=c++14 $(INCLUDE) /home/jz/boost_install_dir/lib/libboost_context.a    /home/jz/boost_install_dir/lib/libboost_thread.a -g3 -o $@
+task_object:task_object.cpp
+	g++ $^ -std=c++14 $(INCLUDE) /home/jz/boost_install_dir/lib/libboost_context.a    /home/jz/boost_install_dir/lib/libboost_thread.a -g3 -o $@ -lpthread
+
+clean:
+	find . -name  '*' -executable | egrep -v '\.$$' |xargs rm
